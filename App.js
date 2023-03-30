@@ -5,6 +5,7 @@ import ImageViewer from "./components/ImageViewer";
 import Button from "./components/Button";
 import CircleButton from "./components/CircleButton";
 import IconButton from "./components/IconButton";
+import EmojiPicker from "./components/EmojiPicker";
 import * as ImagePicker from "expo-image-picker";
 
 // Since this picture is a static resource, you have to reference it using "require"
@@ -12,6 +13,7 @@ const PlaceholderImage = require("./assets/images/background-image.png");
 
 export default function App() {
   const [showAppOptions, setShowAppOptions] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
 
   const pickImageAsync = async () => {
@@ -29,11 +31,15 @@ export default function App() {
     }
   };
 
+  const onModalClose = () => setIsModalVisible(false);
+
   const onReset = () => {
     setShowAppOptions(false);
   };
 
-  const onAddSticker = () => {};
+  const onAddSticker = () => {
+    setIsModalVisible(true);
+  };
 
   const onSaveImageAsync = async () => {};
 
@@ -70,6 +76,10 @@ export default function App() {
           />
         </View>
       )}
+      <EmojiPicker
+        isVisible={isModalVisible}
+        onClose={onModalClose}
+      ></EmojiPicker>
       <StatusBar style="auto" />
     </View>
   );
