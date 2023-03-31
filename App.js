@@ -6,6 +6,8 @@ import Button from "./components/Button";
 import CircleButton from "./components/CircleButton";
 import IconButton from "./components/IconButton";
 import EmojiPicker from "./components/EmojiPicker";
+import EmojiList from "./components/EmojiList";
+import EmojiSticker from "./components/EmojiSticker";
 import * as ImagePicker from "expo-image-picker";
 
 // Since this picture is a static resource, you have to reference it using "require"
@@ -15,6 +17,7 @@ export default function App() {
   const [showAppOptions, setShowAppOptions] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [selectedImage, setSelectedImage] = useState(null);
+  const [pickedEmoji, setPickedEmoji] = useState(null);
 
   const pickImageAsync = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -50,6 +53,9 @@ export default function App() {
           placeholderImageSource={PlaceholderImage}
           selectedImage={selectedImage}
         />
+        {pickedEmoji !== null ? (
+          <EmojiSticker imageSize={40} stickerSource={pickedEmoji} />
+        ) : null}
       </View>
       {showAppOptions ? (
         <View style={styles.optionsContainer}>
@@ -76,10 +82,9 @@ export default function App() {
           />
         </View>
       )}
-      <EmojiPicker
-        isVisible={isModalVisible}
-        onClose={onModalClose}
-      ></EmojiPicker>
+      <EmojiPicker isVisible={isModalVisible} onClose={onModalClose}>
+        <EmojiList onSelect={setPickedEmoji} onCloseModal={onModalClose} />
+      </EmojiPicker>
       <StatusBar style="auto" />
     </View>
   );
